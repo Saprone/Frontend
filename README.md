@@ -1,4 +1,5 @@
-# frontend
+# Frontend
+Frontend for Recipe Generator
 
 ## Project setup
 ```
