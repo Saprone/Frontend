@@ -1,14 +1,17 @@
 <template>
-  <HelloWorld />
+  <UserComponent />
+  <IngredientComponent />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import UserComponent from './components/UserComponent.vue';
+import IngredientComponent from './components/IngredientComponent.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    UserComponent,
+    IngredientComponent,
   }
 }
 </script>
