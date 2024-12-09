@@ -6,8 +6,7 @@
     </div>
     <div v-if="loadingIngredients">
       <p>Loading ingredients...</p>
-    </div>
-    
+    </div>   
     <div>
       <input 
         type="text" 
@@ -73,7 +72,6 @@ export default {
       );
     },
     selectIngredient(ingredient) {
-
       if (!this.basket.find(item => item.id === ingredient.id)) {
         this.basket.push(ingredient); 
       }
@@ -84,21 +82,21 @@ export default {
       this.basket.splice(index, 1); 
     },
     async submitBasket() {
-      if (this.basket.length === 0) {
-        alert('Your basket is empty.');
-        return;
-      } else {
-        console.log(this.basket);
-      }
-      /*try {
-        const response = await axios.post('http://localhost:8222/basket/1/ingredients', this.basket);
-        alert('Basket submitted successfully.');
-        this.basket = []; // Clear the basket after submission
+      try {
+        if (this.basket.length === 0) {
+          alert('Your basket is empty.');
+          return;
+        } else {
+          const response = await axios.post('http://localhost:8222/basket/1/ingredients', this.basket);
+          console.log(response);
+          alert('Basket submitted successfully.');
+          this.basket = []; 
+        }
       } catch (error) {
         console.error('Error submitting basket:', error);
         alert('Failed to submit basket.');
-      }*/
-    },
+      }    
+    }
   },
 };
 </script>
@@ -114,7 +112,7 @@ export default {
   position: absolute; 
   left: 50%; 
   transform: translateX(-50%);
-  background-color: white; /* Add a solid background color */
+  background-color: white;
 }
 
 .suggestions li {
@@ -123,7 +121,7 @@ export default {
 }
 
 .suggestions li:hover {
-  background-color: #f0f0f0; /* Optional: Add a hover effect for better UX */
+  background-color: #f0f0f0; 
 }
 
 ul {
