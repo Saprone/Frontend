@@ -49,10 +49,12 @@ export default {
       searchInput: '',
       filteredIngredients: [],
       basket: [], 
+      loadingBasket: true, 
     };
   },
   created() {
     this.fetchIngredients();
+    this.fetchBasket(); 
   },
   methods: {
     async fetchIngredients() {
@@ -63,6 +65,16 @@ export default {
       } catch (error) {
         console.error('Error fetching ingredients:', error);
         this.loadingIngredients = false;
+      }
+    },
+    async fetchBasket() {
+      try {
+        const response = await axios.get('http://localhost:8222/basket');
+        this.basket = response.data; 
+        this.loadingBasket = false; 
+      } catch (error) {
+        console.error('Error fetching basket:', error);
+        this.loadingBasket = false; 
       }
     },
     filterIngredients() {
