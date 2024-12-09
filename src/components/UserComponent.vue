@@ -1,6 +1,6 @@
 <template>
  <div>
-    <h2>User logged in as</h2>
+    <h2>User</h2>
     <div v-if="user">
     <p>{{ user }}</p>
     </div>
