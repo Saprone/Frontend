@@ -87,6 +87,8 @@ export default {
       if (this.basket.length === 0) {
         alert('Your basket is empty.');
         return;
+      } else {
+        console.log(this.basket);
       }
       /*try {
         const response = await axios.post('http://localhost:8222/basket/1/ingredients', this.basket);
