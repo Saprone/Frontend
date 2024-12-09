@@ -83,14 +83,26 @@ export default {
     },
     async submitBasket() {
       try {
-        if (this.basket.length === 0) {
+        /*if (this.basket.length === 0) {
           alert('Your basket is empty.');
           return;
-        } else {
-          await axios.post('http://localhost:8222/basket/post', JSON.stringify(this.basket));
+        } else {*/
+          var basketTest = [
+            {
+                "id": 97,
+                "name": "Dark Brown Sugar"
+            },
+            {
+                "id": 117,
+                "name": "Farfalle"
+            }
+          ]
+          await axios.post('http://localhost:8222/basket/ingredient', JSON.stringify(basketTest));
+          //await axios.post('http://localhost:8222/basket/ingredient', JSON.stringify(this.basket));
+
           alert('Basket submitted successfully.');
           this.basket = []; 
-        }
+        //}
       } catch (error) {
         alert('Failed to submit basket.');
       }    
