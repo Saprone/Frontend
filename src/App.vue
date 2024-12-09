@@ -5,13 +5,11 @@
 <script>
 //import UserComponent from './components/UserComponent.vue';
 import IngredientComponent from './components/IngredientComponent.vue';
-//import SimpleForm from './components/SimpleForm.vue';
 
 export default {
   name: 'App',
   components: {
-    /*UserComponent,
-    SimpleForm */
+    /*UserComponent,*/
     IngredientComponent 
   }
 }
