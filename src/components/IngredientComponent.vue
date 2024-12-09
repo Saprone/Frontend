@@ -34,7 +34,7 @@
     </ul>
     <p v-else>Your basket is empty.</p>
     
-    <button @click="submitBasket">Search Recipes</button>
+    <button @click="searchRecipes">Search Recipes</button>
   </div>
 </template>
 
@@ -81,30 +81,16 @@ export default {
     removeIngredient(index) {
       this.basket.splice(index, 1); 
     },
-    async submitBasket() {
+    async searchRecipes() {
       try {
-        /*if (this.basket.length === 0) {
+        if (this.basket.length === 0) {
           alert('Your basket is empty.');
           return;
-        } else {*/
-          var basketTest = [
-            {
-                "id": 97,
-                "name": "Dark Brown Sugar"
-            },
-            {
-                "id": 117,
-                "name": "Farfalle"
-            }
-          ]
-          await axios.post('http://localhost:8222/basket/ingredient', JSON.stringify(basketTest));
-          //await axios.post('http://localhost:8222/basket/ingredient', JSON.stringify(this.basket));
-
-          alert('Basket submitted successfully.');
-          this.basket = []; 
-        //}
+        } else {
+          await axios.post('http://localhost:8222/basket/ingredient', JSON.stringify(this.basket));
+        }
       } catch (error) {
-        alert('Failed to submit basket.');
+        console.log('Something went wrong.');
       }    
     }
   },
