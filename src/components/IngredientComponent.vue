@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h2>Ingredients</h2>
+    <h3>Ingredients</h3>
     <div v-if="ingredients.length === 0 && !loadingIngredients">
       <p>No ingredients found.</p>
     </div>
     <div v-if="loadingIngredients">
       <p>Loading ingredients...</p>
     </div>
+    
     <div>
       <input 
         type="text" 
@@ -24,6 +25,17 @@
         </li>
       </ul>
     </div>
+
+    <h3>Basket</h3>
+    <ul v-if="basket.length > 0">
+      <li v-for="(item, index) in basket" :key="item.id">
+        {{ item.name }}
+        <button @click="removeIngredient(index)">🗑️</button>
+      </li>
+    </ul>
+    <p v-else>Your basket is empty.</p>
+    
+    <button @click="submitBasket">Search Recipes</button>
   </div>
 </template>
 
@@ -37,6 +49,7 @@ export default {
       loadingIngredients: true,
       searchInput: '',
       filteredIngredients: [],
+      basket: [], 
     };
   },
   created() {
@@ -60,8 +73,29 @@ export default {
       );
     },
     selectIngredient(ingredient) {
-      this.searchInput = ingredient.name; 
+
+      if (!this.basket.find(item => item.id === ingredient.id)) {
+        this.basket.push(ingredient); 
+      }
+      this.searchInput = ''; 
       this.filteredIngredients = []; 
+    },
+    removeIngredient(index) {
+      this.basket.splice(index, 1); 
+    },
+    async submitBasket() {
+      if (this.basket.length === 0) {
+        alert('Your basket is empty.');
+        return;
+      }
+      /*try {
+        const response = await axios.post('http://localhost:8222/basket/1/ingredients', this.basket);
+        alert('Basket submitted successfully.');
+        this.basket = []; // Clear the basket after submission
+      } catch (error) {
+        console.error('Error submitting basket:', error);
+        alert('Failed to submit basket.');
+      }*/
     },
   },
 };
@@ -69,7 +103,6 @@ export default {
 
 <style>
 .suggestions {
-  list-style-type: none;
   padding: 0;
   margin: 0 auto; 
   border: 1px solid #ccc;
@@ -79,6 +112,7 @@ export default {
   position: absolute; 
   left: 50%; 
   transform: translateX(-50%);
+  background-color: white; /* Add a solid background color */
 }
 
 .suggestions li {
@@ -87,6 +121,10 @@ export default {
 }
 
 .suggestions li:hover {
-  background-color: #f0f0f0;
+  background-color: #f0f0f0; /* Optional: Add a hover effect for better UX */
+}
+
+ul {
+  list-style-type: none;
 }
 </style>
