@@ -87,13 +87,11 @@ export default {
           alert('Your basket is empty.');
           return;
         } else {
-          const response = await axios.post('http://localhost:8222/basket/1/ingredients', this.basket);
-          console.log(response);
+          await axios.post('http://localhost:8222/basket/post', JSON.stringify(this.basket));
           alert('Basket submitted successfully.');
           this.basket = []; 
         }
       } catch (error) {
-        console.error('Error submitting basket:', error);
         alert('Failed to submit basket.');
       }    
     }
