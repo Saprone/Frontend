@@ -19,11 +19,6 @@ export default {
   },
   methods: {
     async sendData() {
-      //get request
-      //const response = await axios.get('http://localhost:8222/basket/get');
-      //console.log("get: "+response.data);
-
-      //post request
       const response = await axios.post('http://localhost:8222/basket/post', this.data);
       console.log("post: "+response.data);
     },
