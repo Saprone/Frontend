@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Post request</h1>
-    <textarea v-model="data" placeholder="Enter some data..."></textarea>
     <button @click="sendData">Send Data</button>
     <p v-if="response">{{ response }}</p>
   </div>
@@ -19,8 +18,19 @@ export default {
   },
   methods: {
     async sendData() {
-      const response = await axios.post('http://localhost:8222/basket/post', this.data);
-      console.log("post: "+response.data);
+      var basket = [
+          {
+              "id": 97,
+              "name": "Dark Brown Sugar"
+          },
+          {
+              "id": 117,
+              "name": "Farfalle"
+          }
+      ]
+
+      var response = await axios.post('http://localhost:8222/basket/post', JSON.stringify(basket));
+      console.log("post: " + response);
     },
   },
 };
