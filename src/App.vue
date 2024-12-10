@@ -3,13 +3,11 @@
 </template>
 
 <script>
-//import UserComponent from './components/UserComponent.vue';
 import IngredientComponent from './components/IngredientComponent.vue';
 
 export default {
   name: 'App',
   components: {
-    /*UserComponent,*/
     IngredientComponent 
   }
 }
