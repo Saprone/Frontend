@@ -74,7 +74,8 @@ export default {
     async addIngredientToBasket(ingredient) {
       if (!this.basket.find(item => item.id === ingredient.id)) {
         this.basket.push(ingredient);
-        await axios.post('http://localhost:8222/basket/ingredient/add', JSON.stringify(ingredient)); 
+        await axios.post('http://localhost:8222/basket/ingredient/add', JSON.stringify(ingredient));
+        this.basket.sort((a, b) => a.name.localeCompare(b.name));
       }
       this.searchInput = ''; 
       this.filteredIngredients = []; 
