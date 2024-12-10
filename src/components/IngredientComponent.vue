@@ -34,7 +34,7 @@
     </ul>
     <p v-else>Your basket is empty.</p>
     
-    <button @click="searchRecipes">Search Recipes</button>
+    <button @click="saveBasket">Save Basket</button>
   </div>
 </template>
 
@@ -90,10 +90,17 @@ export default {
       this.searchInput = ''; 
       this.filteredIngredients = []; 
     },
-    removeIngredient(index) {
-      this.basket.splice(index, 1); 
+    async removeIngredient(index) {
+      const ingredientId = this.basket[index].id; 
+      
+      try {
+          await axios.post('http://localhost:8222/basket/ingredient/remove', ingredientId);
+          this.basket.splice(index, 1); 
+      } catch (error) {
+          console.error('Error removing ingredient:', error);
+      }
     },
-    async searchRecipes() {
+    async saveBasket() {
       try {
         if (this.basket.length === 0) {
           alert('Your basket is empty.');
