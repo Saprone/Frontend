@@ -9,6 +9,7 @@
       :basket="basket" 
       :removeIngredientFromBasket="removeIngredientFromBasket" 
     />
+    <RecipeComponent />
   </div>
 </template>
 
@@ -16,12 +17,14 @@
 import axios from 'axios';
 import IngredientComponent from './components/IngredientComponent.vue';
 import BasketComponent from './components/BasketComponent.vue';
+import RecipeComponent from './components/RecipeComponent.vue';
 
 export default {
   name: 'App',
   components: {
     IngredientComponent,
-    BasketComponent
+    BasketComponent,
+    RecipeComponent
   },
   data() {
     return {
