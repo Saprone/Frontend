@@ -8,33 +8,21 @@
       <p>Loading ingredients...</p>
     </div>   
     <div>
-      <input 
-        type="text" 
-        v-model="searchInput" 
-        @input="filterIngredients" 
-        placeholder="Search ingredient..."
-      />
+      <input type="text" v-model="searchInput" @input="filterIngredients" placeholder="Search ingredient..."/>
       <ul v-if="searchInput && filteredIngredients.length > 0" class="suggestions">
-        <li 
-          v-for="(ingredient) in filteredIngredients" 
-          :key="ingredient.id" 
-          @click="selectIngredient(ingredient)"
-        >
+        <li v-for="(ingredient) in filteredIngredients" :key="ingredient.id" @click="addIngredientToBasket(ingredient)">
           {{ ingredient.name }}
         </li>
       </ul>
     </div>
-
     <h3>Basket</h3>
     <ul v-if="basket.length > 0">
-      <li v-for="(item, index) in basket" :key="item.id">
+      <li v-for="(item, index) in basket" :key="item.id" style="margin-bottom: 4px;">
         {{ item.name }}
-        <button @click="removeIngredient(index)">🗑️</button>
+        <button @click="removeIngredientFromBasket(index)">🗑️</button>
       </li>
     </ul>
     <p v-else>Your basket is empty.</p>
-    
-    <button @click="saveBasket">Save Basket</button>
   </div>
 </template>
 
@@ -83,14 +71,15 @@ export default {
         ingredient.name.toLowerCase().startsWith(query) 
       );
     },
-    selectIngredient(ingredient) {
+    async addIngredientToBasket(ingredient) {
       if (!this.basket.find(item => item.id === ingredient.id)) {
-        this.basket.push(ingredient); 
+        this.basket.push(ingredient);
+        await axios.post('http://localhost:8222/basket/ingredient/add', JSON.stringify(ingredient)); 
       }
       this.searchInput = ''; 
       this.filteredIngredients = []; 
     },
-    async removeIngredient(index) {
+    async removeIngredientFromBasket(index) {
       const ingredientId = this.basket[index].id; 
       
       try {
@@ -99,18 +88,6 @@ export default {
       } catch (error) {
           console.error('Error removing ingredient:', error);
       }
-    },
-    async saveBasket() {
-      try {
-        if (this.basket.length === 0) {
-          alert('Your basket is empty.');
-          return;
-        } else {
-          await axios.post('http://localhost:8222/basket/ingredient', JSON.stringify(this.basket));
-        }
-      } catch (error) {
-        console.log('Something went wrong.');
-      }    
     }
   },
 };
@@ -132,6 +109,10 @@ export default {
 
 .suggestions li {
   padding: 8px;
+  cursor: pointer;
+}
+
+button:hover {
   cursor: pointer;
 }
 
