@@ -1,28 +1,20 @@
 <template>
   <div>
-    <h3>Ingredients</h3>
+    <h3>Ingredient</h3>
     <div v-if="ingredients.length === 0 && !loadingIngredients">
       <p>No ingredients found.</p>
     </div>
     <div v-if="loadingIngredients">
       <p>Loading ingredients...</p>
-    </div>   
+    </div>
     <div>
-      <input type="text" v-model="searchInput" @input="filterIngredients" placeholder="Search ingredient..."/>
+      <input type="text" v-model="searchInput" @input="filterIngredients" placeholder="Search ingredient..." />
       <ul v-if="searchInput && filteredIngredients.length > 0" class="suggestions">
         <li v-for="(ingredient) in filteredIngredients" :key="ingredient.id" @click="addIngredientToBasket(ingredient)">
           {{ ingredient.name }}
         </li>
       </ul>
     </div>
-    <h3>Basket</h3>
-    <ul v-if="basket.length > 0">
-      <li v-for="(item, index) in basket" :key="item.id" style="margin-bottom: 4px;">
-        {{ item.name }}
-        <button @click="removeIngredientFromBasket(index)">🗑️</button>
-      </li>
-    </ul>
-    <p v-else>Your basket is empty.</p>
   </div>
 </template>
 
@@ -36,13 +28,14 @@ export default {
       loadingIngredients: true,
       searchInput: '',
       filteredIngredients: [],
-      basket: [], 
-      loadingBasket: true, 
     };
+  },
+  props: {
+    basket: Array,
+    addIngredientToBasket: Function,
   },
   created() {
     this.fetchIngredients();
-    this.fetchBasket(); 
   },
   methods: {
     async fetchIngredients() {
@@ -55,41 +48,12 @@ export default {
         this.loadingIngredients = false;
       }
     },
-    async fetchBasket() {
-      try {
-        const response = await axios.get('http://localhost:8222/basket');
-        this.basket = response.data; 
-        this.loadingBasket = false; 
-      } catch (error) {
-        console.error('Error fetching basket:', error);
-        this.loadingBasket = false; 
-      }
-    },
     filterIngredients() {
       const query = this.searchInput.toLowerCase();
       this.filteredIngredients = this.ingredients.filter(ingredient =>
-        ingredient.name.toLowerCase().startsWith(query) 
+        ingredient.name.toLowerCase().startsWith(query)
       );
     },
-    async addIngredientToBasket(ingredient) {
-      if (!this.basket.find(item => item.id === ingredient.id)) {
-        this.basket.push(ingredient);
-        await axios.post('http://localhost:8222/basket/ingredient/add', JSON.stringify(ingredient));
-        this.basket.sort((a, b) => a.name.localeCompare(b.name));
-      }
-      this.searchInput = ''; 
-      this.filteredIngredients = []; 
-    },
-    async removeIngredientFromBasket(index) {
-      const ingredientId = this.basket[index].id; 
-      
-      try {
-          await axios.post('http://localhost:8222/basket/ingredient/remove', ingredientId);
-          this.basket.splice(index, 1); 
-      } catch (error) {
-          console.error('Error removing ingredient:', error);
-      }
-    }
   },
 };
 </script>
@@ -97,13 +61,13 @@ export default {
 <style>
 .suggestions {
   padding: 0;
-  margin: 0 auto; 
+  margin: 0 auto;
   border: 1px solid #ccc;
   max-height: 150px;
   overflow-y: auto;
-  width: 15%; 
-  position: absolute; 
-  left: 50%; 
+  width: 15%;
+  position: absolute;
+  left: 50%;
   transform: translateX(-50%);
   background-color: white;
 }
@@ -118,7 +82,7 @@ button:hover {
 }
 
 .suggestions li:hover {
-  background-color: #f0f0f0; 
+  background-color: #f0f0f0;
 }
 
 ul {
