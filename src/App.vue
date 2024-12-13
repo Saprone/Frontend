@@ -9,7 +9,7 @@
       :basket="basket" 
       :removeIngredientFromBasket="removeIngredientFromBasket" 
     />
-    <RecipeComponent />
+    <RecipeComponent :recipes="recipes" />
   </div>
 </template>
 
@@ -24,23 +24,37 @@ export default {
   components: {
     IngredientComponent,
     BasketComponent,
-    RecipeComponent
+    RecipeComponent,
   },
   data() {
     return {
-      basket: []
+      basket: [],
+      recipes: [],
     };
   },
   created() {
     this.fetchBasket();
+    this.fetchRecipes();
   },
   methods: {
     async fetchBasket() {
       try {
         const response = await axios.get('http://localhost:8222/basket');
+        console.log('basket response: '+response);
         this.basket = response.data;
+        console.log('basket data: '+response.data);
       } catch (error) {
         console.error('Error fetching basket:', error);
+      }
+    },
+    async fetchRecipes() {
+      try {
+        const response = await axios.get('http://localhost:8222/recipes');  
+        console.log('recipe response: '+response);
+        this.recipes = response.data;
+        console.log('recipe data: '+response.data);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
       }
     },
     async addIngredientToBasket(ingredient) {

@@ -7,34 +7,15 @@
         </ul>
     </div>
 </template>
-
+  
 <script>
 export default {
-    data() {
-        return {
-            recipes: [],
-        };
+    props: {
+        recipes: Array,
     },
-    created() {
-        this.fetchRecipes();
-    },
-    methods: {
-        async fetchRecipes() {
-            try {
-                const response = await fetch('http://localhost:8222/recipes');
-                if (!response.ok) {
-                    throw new Error('Problem with network respone');
-                }
-                const data = await response.json();
-                this.recipes = data;
-            } catch (error) {
-                console.error('Problem with the fetch operation:', error);
-            }
-        }
-    }
 };
 </script>
-
+  
 <style>
 ul {
     list-style-type: none;
@@ -46,3 +27,4 @@ li {
     margin: 10px 0; 
 }
 </style>
+ 
