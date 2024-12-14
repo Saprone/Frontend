@@ -1,18 +1,22 @@
 <template>
-    <div>
-        <h3>Recipe</h3>
-            <p v-if="initialLoad && !recipes.length">Add/remove ingredients to see recipes.</p>
-            <p v-else-if="!initialLoad && !recipes.length">No recipes found.</p>
-        <ul v-else>
-            <li v-for="recipe in recipes" :key="recipe.id">{{ recipe.name }}</li>
-        </ul>
+<div>
+    <h3>Recipe</h3>
+    <p v-if="initialLoad && !recipes.length && !loadingRecipes">Add/remove ingredients to see recipes.</p>
+    <p v-else-if="!initialLoad && !recipes.length">No recipes found.</p>
+    <div v-if="loadingRecipes">
+        <p>Loading recipes...</p> 
     </div>
+    <ul v-else>
+        <li v-for="recipe in recipes" :key="recipe.id">{{ recipe.name }}</li>
+    </ul>
+</div>
 </template>
 
 <script>
 export default {
 props: {
     recipes: Array,
+    loadingRecipes: Boolean, 
 },
 data() {
     return {
@@ -28,7 +32,7 @@ watch: {
 },
 };
 </script>
-  
+
 <style>
 ul {
     list-style-type: none;

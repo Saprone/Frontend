@@ -9,7 +9,7 @@
       :basket="basket" 
       :removeIngredientFromBasket="removeIngredientFromBasket" 
     />
-    <RecipeComponent :recipes="recipes" />
+    <RecipeComponent :recipes="recipes" :loadingRecipes="loadingRecipes" />
   </div>
 </template>
 
@@ -30,6 +30,7 @@ export default {
     return {
       basket: [],
       recipes: [],
+      loadingRecipes: false, 
     };
   },
   created() {
@@ -45,11 +46,15 @@ export default {
       }
     },
     async fetchRecipes() {
+      this.loadingRecipes = true;
+
       try {
         const response = await axios.get('http://localhost:8222/recipes');  
         this.recipes = response.data;
       } catch (error) {
         console.error('Error fetching recipes:', error);
+      } finally {
+        this.loadingRecipes = false; 
       }
     },
     async addIngredientToBasket(ingredient) {
