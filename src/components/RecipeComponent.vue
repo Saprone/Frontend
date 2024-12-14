@@ -3,9 +3,7 @@
     <h3>Recipe</h3>
     <p v-if="initialLoad && !recipes.length && !loadingRecipes">Add/remove ingredients to see recipes.</p>
     <p v-else-if="!initialLoad && !recipes.length">No recipes found.</p>
-    <div v-if="loadingRecipes">
-        <p>Loading recipes...</p> 
-    </div>
+    <p v-if="loadingRecipes">Loading recipes...</p> 
     <ul v-else>
         <li v-for="recipe in recipes" :key="recipe.id">{{ recipe.name }}</li>
     </ul>
