@@ -1,18 +1,31 @@
 <template>
     <div>
         <h3>Recipe</h3>
-        <p v-if="!recipes.length">No recipes found.</p>
+            <p v-if="initialLoad && !recipes.length">Add/remove ingredients to see recipes.</p>
+            <p v-else-if="!initialLoad && !recipes.length">No recipes found.</p>
         <ul v-else>
             <li v-for="recipe in recipes" :key="recipe.id">{{ recipe.name }}</li>
         </ul>
     </div>
 </template>
-  
+
 <script>
 export default {
-    props: {
-        recipes: Array,
+props: {
+    recipes: Array,
+},
+data() {
+    return {
+        initialLoad: true, 
+    };
+},
+watch: {
+    recipes(newRecipes) {
+        if (newRecipes.length > 0) {
+            this.initialLoad = false; 
+        }
     },
+},
 };
 </script>
   
@@ -27,4 +40,4 @@ li {
     margin: 10px 0; 
 }
 </style>
- 
+  

@@ -34,15 +34,12 @@ export default {
   },
   created() {
     this.fetchBasket();
-    this.fetchRecipes();
   },
   methods: {
     async fetchBasket() {
       try {
         const response = await axios.get('http://localhost:8222/basket');
-        console.log('basket response: '+response);
         this.basket = response.data;
-        console.log('basket data: '+response.data);
       } catch (error) {
         console.error('Error fetching basket:', error);
       }
@@ -50,9 +47,7 @@ export default {
     async fetchRecipes() {
       try {
         const response = await axios.get('http://localhost:8222/recipes');  
-        console.log('recipe response: '+response);
         this.recipes = response.data;
-        console.log('recipe data: '+response.data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
       }
@@ -64,6 +59,7 @@ export default {
         this.basket.push(ingredient);
         this.basket.sort((a, b) => a.name.localeCompare(b.name));
         await axios.post('http://localhost:8222/basket/ingredient/add', JSON.stringify(ingredient));  
+        await this.fetchRecipes();
       }
     },
     async removeIngredientFromBasket(index) {
@@ -71,6 +67,7 @@ export default {
       try {
         await axios.post('http://localhost:8222/basket/ingredient/remove', ingredientId);
         this.basket.splice(index, 1);
+        await this.fetchRecipes();
       } catch (error) {
         console.error('Error removing ingredient:', error);
       }
