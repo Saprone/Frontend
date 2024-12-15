@@ -10,7 +10,13 @@
     <div>
       <input type="text" v-model="searchInput" @input="filterIngredients" placeholder="Search ingredient..." />
       <ul v-if="searchInput && filteredIngredients.length > 0" class="suggestions">
-        <li v-for="(ingredient) in filteredIngredients" :key="ingredient.id" @click="addIngredientToBasket(ingredient)">
+        <li 
+          v-for="(ingredient) in filteredIngredients" 
+          :key="ingredient.id" 
+          :style="{ cursor: basket.length === 0 ? 'not-allowed' : 'pointer' }"
+          @click="basket.length > 0 ? addIngredientToBasket(ingredient) : null"
+          :class="{ 'not-allowed': basket.length === 0 }"
+        >
           {{ ingredient.name }}
         </li>
       </ul>
@@ -74,15 +80,18 @@ export default {
 
 .suggestions li {
   padding: 8px;
-  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
 }
 
 button:hover {
   cursor: pointer;
 }
 
-.suggestions li:hover {
-  background-color: #f0f0f0;
+.not-allowed {
+  cursor: not-allowed; 
 }
 
 ul {
