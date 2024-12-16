@@ -4,12 +4,18 @@
       ref="ingredientComponent" 
       :basket="basket" 
       :addIngredientToBasket="addIngredientToBasket" 
+      :fetchIngredientsStatus="fetchIngredientsStatus"
     />
     <BasketComponent 
       :basket="basket" 
       :removeIngredientFromBasket="removeIngredientFromBasket" 
+      :fetchBasketStatus="fetchBasketStatus"  
     />
-    <RecipeComponent :recipes="recipes" :loadingRecipes="loadingRecipes" />
+    <RecipeComponent 
+      :recipes="recipes" 
+      :loadingRecipes="loadingRecipes" 
+      :fetchRecipesStatus="fetchRecipesStatus"  
+    />
   </div>
 </template>
 
@@ -27,23 +33,37 @@ export default {
     RecipeComponent,
   },
   data() {
-    return {
-      basket: [],
-      recipes: [],
-      loadingRecipes: false, 
-    };
-  },
+  return {
+    basket: [],
+    recipes: [],
+    loadingRecipes: false,
+    fetchIngredientsStatus: null, 
+    fetchBasketStatus: null, 
+    fetchRecipesStatus: null 
+  };
+},
   created() {
     this.fetchBasket();
+    this.getRecipeStatus();
   },
   methods: {
     async fetchBasket() {
       try {
         const response = await axios.get('http://localhost:8222/basket');
         this.basket = response.data;
+        this.fetchBasketStatus = 'success'; 
       } catch (error) {
         console.error('Error fetching basket:', error);
+        this.fetchBasketStatus = 'error'; 
       }
+    },
+    async getRecipeStatus() {
+      try {
+        await axios.get('http://localhost:8222/recipes/status');  
+        this.fetchRecipesStatus = 'success'; 
+      } catch (error) {
+        this.fetchRecipesStatus = 'error'; 
+      } 
     },
     async fetchRecipes() {
       this.loadingRecipes = true;

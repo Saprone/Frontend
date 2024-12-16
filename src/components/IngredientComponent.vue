@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h3>Ingredient</h3>
+    <h3>
+      Ingredient 
+      <span v-if="fetchIngredientsStatus === 'success'">🟢</span>
+      <span v-if="fetchIngredientsStatus === 'error'">🔴</span>
+    </h3>
     <div v-if="ingredients.length === 0 && !loadingIngredients">
       <p>No ingredients found.</p>
     </div>
@@ -49,9 +53,11 @@ export default {
         const response = await axios.get('http://localhost:8222/ingredients');
         this.ingredients = response.data;
         this.loadingIngredients = false;
+        this.fetchIngredientsStatus = 'success'; 
       } catch (error) {
         console.error('Error fetching ingredients:', error);
         this.loadingIngredients = false;
+        this.fetchIngredientsStatus = 'error'; 
       }
     },
     filterIngredients() {

@@ -1,6 +1,10 @@
 <template>
 <div>
-    <h3>Recipe</h3>
+    <h3>
+        Recipe 
+        <span v-if="fetchRecipesStatus === 'success'">🟢</span>
+        <span v-if="fetchRecipesStatus === 'error'">🔴</span>
+    </h3>
     <p v-if="initialLoad && !recipes.length && !loadingRecipes">Add/remove ingredients to see recipes.</p>
     <p v-else-if="!initialLoad && !recipes.length">No recipes found.</p>
     <p v-if="loadingRecipes">Loading recipes...</p> 
@@ -15,6 +19,7 @@ export default {
 props: {
     recipes: Array,
     loadingRecipes: Boolean, 
+    fetchRecipesStatus: String, 
 },
 data() {
     return {
