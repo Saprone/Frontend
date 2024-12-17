@@ -17,9 +17,8 @@
         <li 
           v-for="(ingredient) in filteredIngredients" 
           :key="ingredient.id" 
-          :style="{ cursor: basket.length === 0 ? 'not-allowed' : 'pointer' }"
-          @click="basket.length > 0 ? addIngredientToBasket(ingredient) : null"
-          :class="{ 'not-allowed': basket.length === 0 }"
+          @click="fetchBasketStatus === 'success' ? addIngredientToBasket(ingredient) : null" 
+          :class="fetchBasketStatus === 'success' ? 'clickable' : 'not-allowed'"
         >
           {{ ingredient.name }}
         </li>
@@ -43,6 +42,7 @@ export default {
   props: {
     basket: Array,
     addIngredientToBasket: Function,
+    fetchBasketStatus: String, 
   },
   created() {
     this.fetchIngredients();
@@ -96,8 +96,12 @@ button:hover {
   cursor: pointer;
 }
 
-.not-allowed {
-  cursor: not-allowed; 
+.clickable:hover {
+  cursor: pointer;
+}
+
+.not-allowed:hover {
+  cursor: not-allowed;
 }
 
 ul {

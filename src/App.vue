@@ -5,6 +5,7 @@
       :basket="basket" 
       :addIngredientToBasket="addIngredientToBasket" 
       :fetchIngredientsStatus="fetchIngredientsStatus"
+      :fetchBasketStatus="fetchBasketStatus" 
     />
     <BasketComponent 
       :basket="basket" 
