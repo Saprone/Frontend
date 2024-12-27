@@ -50,7 +50,7 @@ export default {
   methods: {
     async fetchBasket() {
       try {
-        const response = await axios.get('http://localhost:8222/basket');
+        const response = await axios.get('https://recipegenerator-basket.wonderfulriver-9d9a4e88.northeurope.azurecontainerapps.io/basket');
         this.basket = response.data;
         this.fetchBasketStatus = 'success'; 
       } catch (error) {
@@ -60,7 +60,7 @@ export default {
     },
     async getRecipeStatus() {
       try {
-        await axios.get('http://localhost:8222/recipes/status');  
+        await axios.get('https://recipegenerator-recipe.wonderfulriver-9d9a4e88.northeurope.azurecontainerapps.io/recipes/status');  
         this.fetchRecipesStatus = 'success'; 
       } catch (error) {
         this.fetchRecipesStatus = 'error'; 
@@ -70,7 +70,7 @@ export default {
       this.loadingRecipes = true;
 
       try {
-        const response = await axios.get('http://localhost:8222/recipes');  
+        const response = await axios.get('https://recipegenerator-recipe.wonderfulriver-9d9a4e88.northeurope.azurecontainerapps.io/recipes');  
         this.recipes = response.data;
       } catch (error) {
         console.error('Error fetching recipes:', error);
@@ -84,14 +84,14 @@ export default {
         this.$refs.ingredientComponent.filteredIngredients = [];
         this.basket.push(ingredient);
         this.basket.sort((a, b) => a.name.localeCompare(b.name));
-        await axios.post('http://localhost:8222/basket/ingredient/add', JSON.stringify(ingredient));  
+        await axios.post('https://recipegenerator-basket.wonderfulriver-9d9a4e88.northeurope.azurecontainerapps.io/basket/ingredient/add', JSON.stringify(ingredient));  
         await this.fetchRecipes();
       }
     },
     async removeIngredientFromBasket(index) {
       const ingredientId = this.basket[index].id; 
       try {
-        await axios.post('http://localhost:8222/basket/ingredient/remove', ingredientId);
+        await axios.post('https://recipegenerator-basket.wonderfulriver-9d9a4e88.northeurope.azurecontainerapps.io/basket/ingredient/remove', ingredientId);
         this.basket.splice(index, 1);
         await this.fetchRecipes();
       } catch (error) {
