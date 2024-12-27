@@ -50,7 +50,7 @@ export default {
   methods: {
     async fetchIngredients() {
       try {
-        const response = await axios.get('http://localhost:8222/ingredients');
+        const response = await axios.get('https://recipegenerator-backend-ingredient.internal.wonderfulriver-9d9a4e88.northeurope.azurecontainerapps.io/ingredients');
         this.ingredients = response.data;
         this.loadingIngredients = false;
         this.fetchIngredientsStatus = 'success'; 
