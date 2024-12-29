@@ -7,8 +7,8 @@ on:
     branches: 
       [ master ]
     paths:
-    - '**'
-    - '.github/workflows/recipegenerator-frontend-AutoDeployTrigger-5b175a8d-cfb5-4261-aea9-31a53797321f.yml'
+      - '**'
+      - '.github/workflows/recipegenerator-frontend-AutoDeployTrigger-5b175a8d-cfb5-4261-aea9-31a53797321f.yml'
 
   # Allow manual trigger 
   workflow_dispatch:      
@@ -24,6 +24,12 @@ jobs:
       - name: Checkout to the branch
         uses: actions/checkout@v2
 
+      - name: Run SonarCloud analysis
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -31,7 +37,7 @@ jobs:
           tenant-id: ${{ secrets.RECIPEGENERATORFRONTEND_AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.RECIPEGENERATORFRONTEND_AZURE_SUBSCRIPTION_ID }}
 
-      - name: Build and push container image to registry
+      - name: Build and push container image to Docker Hub
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }}
