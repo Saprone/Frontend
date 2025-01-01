@@ -19,17 +19,8 @@ RUN npm run build
 # Use a new image to serve the application
 FROM nginx:alpine
 
-# Create a non-root user and group
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
 # Copy the built application from the builder stage to Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Change ownership of the Nginx html directory to the non-root user
-RUN chown -R appuser:appgroup /usr/share/nginx/html
-
-# Switch to the non-root user
-USER appuser
 
 # Expose the application port
 EXPOSE 80
