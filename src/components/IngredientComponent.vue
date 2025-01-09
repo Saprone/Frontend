@@ -35,8 +35,8 @@ export default {
     return {
       ingredients: [],
       loadingIngredients: true,
-      searchInput: '',
       filteredIngredients: [],
+      searchInput: '',
     };
   },
   props: {
